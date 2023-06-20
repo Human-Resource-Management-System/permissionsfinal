@@ -40,7 +40,10 @@ public class PermissionsController {
 	}
 
 	@RequestMapping(value = "/getpermissions")
-	public String applypermission() {
+	public String applypermission(Model model) {
+		Long count = apd.getEmployeeAndPermissionRequestDataCount(302, Date.valueOf(LocalDate.now()));
+		System.out.println(count);
+		model.addAttribute("PermissionCount", count);
 		return "emppermission";
 	}
 

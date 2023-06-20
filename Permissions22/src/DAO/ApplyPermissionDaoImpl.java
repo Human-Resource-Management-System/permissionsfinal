@@ -74,4 +74,15 @@ public class ApplyPermissionDaoImpl {
 		}
 	}
 
+	public Long getEmployeeAndPermissionRequestDataCount(int id, Date current) {
+		String jpqlQuery = "SELECT COUNT(elrq) FROM ApplyPermissions elrq " + "WHERE elrq.id.empl_id = :employeeIds "
+				+ "AND elrq.current_date = :currentdate";
+		TypedQuery<Long> query = em.createQuery(jpqlQuery, Long.class);
+		query.setParameter("employeeIds", id);
+		query.setParameter("currentdate", current);
+		Long count = query.getSingleResult();
+
+		return count;
+	}
+
 }
