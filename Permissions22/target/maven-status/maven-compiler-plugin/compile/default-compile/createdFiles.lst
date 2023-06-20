@@ -1,0 +1,6 @@
+models\PermissionCompositeKey.class
+DAO\ApplyPermissionDaoImpl.class
+models\ApplyPermissions.class
+controllers\PermissionsController.class
+models\PermissionAdminModel.class
+models\PermissionInputModel.class

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <mvc:annotation-driven />
+    <context:component-scan base-package="controllers" />
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+
+    <!-- DataSource configuration -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver" />
+        <property name="url" value="jdbc:postgresql://192.168.110.48:5432/plf_training" />
+        <property name="username" value="plf_training_admin" />
+        <property name="password" value="pff123" />
+    </bean>
+
+    
+    <!-- EntityManager configuration -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+        p:persistenceUnitName="myPersistenceUnit"
+        p:dataSource-ref="dataSource">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="true" />
+                <property name="showSql" value="true" />
+            </bean>
+        </property>
+        <property name="packagesToScan" value="models" />
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+                <entry key="hibernate.show_sql" value="true" />
+                <!-- Additional Hibernate properties can be added here -->
+            </map>
+        </property>
+    </bean>
+  
+    <!-- Define the HolidayDAO bean -->
+   
+   
+    <!-- Enable transactional support for EntityManager -->
+    <tx:annotation-driven transaction-manager="jpaTransactionManager" />
+    
+    <!-- EntityManager configuration -->
+    <bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	
+	
+	
+
+	
+    <!-- Configure the Hibernate transaction manager -->
+    <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+  
+    <bean id="apdi" class="DAO.ApplyPermissionDaoImpl" />
+    <bean id="app" class="models.ApplyPermissions" />
+    <bean id="cKey" class="models.PermissionCompositeKey" />
+     <!-- Dependency Injection Configuration -->
+        
+</beans>
